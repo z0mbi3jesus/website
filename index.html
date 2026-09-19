@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Independent Systems</title>
+	<style>
+		:root {
+			color-scheme: dark;
+			--background: #17191b;
+			--sidebar: #202326;
+			--button: #3a3e42;
+			--button-hover: #4a4f54;
+			--text: #e1e2df;
+			--muted: #969b9d;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		html,
+		body {
+			margin: 0;
+			min-height: 100%;
+		}
+
+		body {
+			background: var(--background);
+			color: var(--text);
+			font-family: Georgia, 'Times New Roman', serif;
+		}
+
+		.page {
+			display: grid;
+			grid-template-columns: 15rem minmax(0, 1fr);
+			min-height: 100vh;
+		}
+
+		.sidebar {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			padding: 2rem 1.5rem;
+			background: var(--sidebar);
+		}
+
+		.mark {
+			color: var(--muted);
+			font-family: 'Courier New', monospace;
+			font-size: 0.75rem;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+		}
+
+		.navigation {
+			display: grid;
+			gap: 0.55rem;
+			margin-top: 4rem;
+		}
+
+		.navigation a {
+			display: block;
+			padding: 0.75rem 0.85rem;
+			border: 1px solid transparent;
+			color: var(--text);
+			background: var(--button);
+			font-family: 'Courier New', monospace;
+			font-size: 0.8rem;
+			text-decoration: none;
+			transition: background 160ms ease, border-color 160ms ease;
+		}
+
+		.navigation a:hover,
+		.navigation a:focus-visible {
+			border-color: var(--muted);
+			background: var(--button-hover);
+			outline: none;
+		}
+
+		.sidebar-footer {
+			color: var(--muted);
+			font-family: 'Courier New', monospace;
+			font-size: 0.7rem;
+			line-height: 1.5;
+		}
+
+		.hero {
+			position: relative;
+			display: flex;
+			align-items: flex-end;
+			min-height: 100vh;
+			overflow: hidden;
+			background: #292c2d;
+		}
+
+		.hero-image {
+			position: absolute;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: center;
+			opacity: 0.78;
+			filter: grayscale(0.65) contrast(1.08);
+		}
+
+		.hero::after {
+			position: absolute;
+			inset: 0;
+			background: linear-gradient(180deg, transparent 42%, rgba(10, 11, 12, 0.82) 100%);
+			content: '';
+		}
+
+		.hero-caption {
+			position: relative;
+			z-index: 1;
+			max-width: 32rem;
+			padding: 2.5rem clamp(1.5rem, 5vw, 5rem);
+		}
+
+		.hero-caption p {
+			margin: 0;
+			color: #d8d9d5;
+			font-size: clamp(1.35rem, 2.4vw, 2.35rem);
+			line-height: 1.1;
+		}
+
+		@media (max-width: 680px) {
+			.page {
+				display: block;
+			}
+
+			.sidebar {
+				min-height: auto;
+				padding: 1.25rem;
+			}
+
+			.navigation {
+				grid-template-columns: repeat(3, 1fr);
+				margin-top: 2rem;
+			}
+
+			.sidebar-footer {
+				display: none;
+			}
+
+			.hero {
+				min-height: calc(100vh - 9.75rem);
+			}
+
+			.hero-caption {
+				padding: 2rem 1.25rem;
+			}
+		}
+	</style>
+</head>
+<body>
+	<main class="page">
+		<aside class="sidebar">
+			<div>
+				<div class="mark">Independent systems</div>
+				<nav class="navigation" aria-label="Main navigation">
+					<a href="#work">Work</a>
+					<a href="#now">Now</a>
+					<a href="#about">About</a>
+				</nav>
+			</div>
+			<div class="sidebar-footer">A place for work<br>in progress.</div>
+		</aside>
+
+		<section class="hero" aria-label="Introduction">
+			<img
+				class="hero-image"
+				src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=2200&q=85"
+				alt="A workspace with a laptop and notebook"
+			>
+			<div class="hero-caption">
+				<p>Software for places with a weak link.</p>
+			</div>
+		</section>
+	</main>
+</body>
+</html>
