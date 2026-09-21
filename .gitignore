@@ -1,0 +1,18 @@
+# Local environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Supabase local development
+.supabase/
+
+# Dependencies and build output
+node_modules/
+dist/
+build/
+
+# Local editor and operating-system files
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
