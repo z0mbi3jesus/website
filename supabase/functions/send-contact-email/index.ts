@@ -44,51 +44,27 @@ const getContactMessage = (value: unknown): ContactMessage | null => {
 	return { name, email, message: content };
 };
 
-const getZohoAccessToken = async () => {
-	const params = new URLSearchParams({
-		refresh_token: Deno.env.get('ZOHO_REFRESH_TOKEN') ?? '',
-		client_id: Deno.env.get('ZOHO_CLIENT_ID') ?? '',
-		client_secret: Deno.env.get('ZOHO_CLIENT_SECRET') ?? '',
-		grant_type: 'refresh_token',
-	});
+const sendMessageWithResend = async (message: ContactMessage) => {
+	const apiKey = Deno.env.get('RESEND_API_KEY');
+	const fromAddress = Deno.env.get('RESEND_FROM_EMAIL') ?? 'hutton@6thlevel.net';
+	const toAddress = Deno.env.get('CONTACT_TO_EMAIL') ?? 'hutton@6thlevel.net';
 
-	const response = await fetch(`https://accounts.zoho.com/oauth/v2/token?${params}`, {
-		method: 'POST',
-	});
-
-	if (!response.ok) {
-		throw new Error('Zoho token refresh failed.');
+	if (!apiKey) {
+		throw new Error('RESEND_API_KEY is not configured.');
 	}
 
-	const result = await response.json();
-	if (typeof result.access_token !== 'string') {
-		throw new Error('Zoho token response did not include an access token.');
-	}
-
-	return result.access_token;
-};
-
-const sendZohoMessage = async (message: ContactMessage) => {
-	const accountId = Deno.env.get('ZOHO_ACCOUNT_ID');
-	const fromAddress = Deno.env.get('ZOHO_FROM_EMAIL') ?? 'hutton@6thlevel.net';
-	const accessToken = await getZohoAccessToken();
-
-	if (!accountId) {
-		throw new Error('ZOHO_ACCOUNT_ID is not configured.');
-	}
-
-	const response = await fetch(`https://mail.zoho.com/api/accounts/${accountId}/messages`, {
+	const response = await fetch('https://api.resend.com/emails', {
 		method: 'POST',
 		headers: {
-			Authorization: `Zoho-oauthtoken ${accessToken}`,
+			Authorization: `Bearer ${apiKey}`,
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify({
-			fromAddress,
-			toAddress: fromAddress,
+			from: fromAddress,
+			to: [toAddress],
+			reply_to: message.email,
 			subject: `Project inquiry from ${message.name}`,
-			contentType: 'html',
-			content: [
+			html: [
 				`<p><strong>Name:</strong> ${escapeHtml(message.name)}</p>`,
 				`<p><strong>Email:</strong> ${escapeHtml(message.email)}</p>`,
 				`<p>${escapeHtml(message.message).replace(/\n/g, '<br>')}</p>`,
@@ -97,7 +73,8 @@ const sendZohoMessage = async (message: ContactMessage) => {
 	});
 
 	if (!response.ok) {
-		throw new Error('Zoho message delivery failed.');
+		const detail = await response.text();
+		throw new Error(`Resend delivery failed: ${detail}`);
 	}
 };
 
@@ -116,7 +93,7 @@ Deno.serve(async (request) => {
 			return jsonResponse({ error: 'Please provide a valid name, email, and message.' }, 400);
 		}
 
-		await sendZohoMessage(message);
+		await sendMessageWithResend(message);
 		return jsonResponse({ message: 'Message sent.' });
 	} catch (error) {
 		console.error(error);
