@@ -268,26 +268,56 @@
 						Message
 						<textarea name="message" required></textarea>
 					</label>
-					<button type="submit">Open email</button>
-					<p class="form-note"></p>
+					<button type="submit">Send message</button>
+					<p class="form-note" id="form-status" role="status"></p>
 				</form>
 			</div>
 		</section>
 	</main>
 	<script>
-		document.querySelector('#contact-form').addEventListener('submit', function (event) {
+		const SUPABASE_FUNCTION_URL = '';
+		const SUPABASE_ANON_KEY = '';
+		const form = document.querySelector('#contact-form');
+		const status = document.querySelector('#form-status');
+		const submitButton = form.querySelector('button[type="submit"]');
+
+		form.addEventListener('submit', async function (event) {
 			event.preventDefault();
+			status.textContent = '';
+			submitButton.disabled = true;
+			submitButton.textContent = 'Sending...';
 
-			const form = new FormData(event.currentTarget);
-			const subject = `Project inquiry from ${form.get('name')}`;
-			const body = [
-				`Name: ${form.get('name')}`,
-				`Email: ${form.get('email')}`,
-				'',
-				form.get('message')
-			].join('\n');
+			if (!SUPABASE_FUNCTION_URL) {
+				status.textContent = 'The contact service is not configured yet.';
+				submitButton.disabled = false;
+				submitButton.textContent = 'Send message';
+				return;
+			}
 
-			window.location.href = `mailto:hutton@6thlevel.net?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+			try {
+				const response = await fetch(SUPABASE_FUNCTION_URL, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						apikey: SUPABASE_ANON_KEY,
+						Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+					},
+					body: JSON.stringify(Object.fromEntries(new FormData(form)))
+				});
+
+				if (!response.ok) {
+					throw new Error('The contact service returned an error.');
+				}
+
+				form.reset();
+				status.textContent = 'Message sent. Thank you.';
+			} catch (error) {
+				console.error(error);
+				status.textContent = 'Unable to send the message right now. Please try again.';
+			} finally {
+				submitButton.disabled = false;
+				submitButton.textContent = 'Send message';
+			}
 		});
 	</script>
 </body>
