@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Products | 6th Level</title>
+	<style>
+		:root {
+			color-scheme: dark;
+			--background: #17191b;
+			--sidebar: #202326;
+			--button: #3a3e42;
+			--button-hover: #4a4f54;
+			--text: #e1e2df;
+			--muted: #969b9d;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		html,
+		body {
+			margin: 0;
+			min-height: 100%;
+		}
+
+		body {
+			background: var(--background);
+			color: var(--text);
+			font-family: Georgia, 'Times New Roman', serif;
+		}
+
+		.page {
+			display: grid;
+			grid-template-columns: 15rem minmax(0, 1fr);
+			min-height: 100vh;
+		}
+
+		.sidebar {
+			position: sticky;
+			top: 0;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			height: 100vh;
+			padding: 2rem 1.5rem;
+			background: var(--sidebar);
+		}
+
+		.mark {
+			color: var(--muted);
+			font-family: 'Courier New', monospace;
+			font-size: 0.75rem;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+		}
+
+		.navigation {
+			display: grid;
+			gap: 0.55rem;
+			margin-top: 4rem;
+		}
+
+		.navigation a {
+			display: block;
+			padding: 0.75rem 0.85rem;
+			border: 1px solid transparent;
+			color: var(--text);
+			background: var(--button);
+			font-family: 'Courier New', monospace;
+			font-size: 0.8rem;
+			text-decoration: none;
+			transition: background 160ms ease, border-color 160ms ease;
+		}
+
+		.navigation a:hover,
+		.navigation a:focus-visible {
+			border-color: var(--muted);
+			background: var(--button-hover);
+			outline: none;
+		}
+
+		.sidebar-footer {
+			color: var(--muted);
+			font-family: 'Courier New', monospace;
+			font-size: 0.7rem;
+			line-height: 1.5;
+		}
+
+		.products {
+			display: flex;
+			align-items: center;
+			min-height: 100vh;
+			padding: clamp(2rem, 8vw, 7rem);
+			background: #202326;
+		}
+
+		.products-content {
+			width: min(100%, 42rem);
+		}
+
+		.eyebrow {
+			margin: 0 0 1.25rem;
+			color: var(--muted);
+			font-family: 'Courier New', monospace;
+			font-size: 0.75rem;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+		}
+
+		h1 {
+			margin: 0 0 1.25rem;
+			font-size: clamp(2.75rem, 6vw, 5rem);
+			font-weight: normal;
+			line-height: 1;
+		}
+
+		.message {
+			max-width: 34rem;
+			margin: 0;
+			color: var(--muted);
+			font-size: 1.1rem;
+			line-height: 1.65;
+		}
+
+		@media (max-width: 680px) {
+			.page {
+				display: block;
+			}
+
+			.sidebar {
+				position: static;
+				height: auto;
+				min-height: auto;
+				padding: 1.25rem;
+			}
+
+			.navigation {
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+				margin-top: 2rem;
+			}
+
+			.sidebar-footer {
+				display: none;
+			}
+
+			.products {
+				min-height: calc(100vh - 9.75rem);
+				padding: 3rem 1.25rem;
+			}
+		}
+	</style>
+</head>
+<body>
+	<main class="page">
+		<aside class="sidebar">
+			<div>
+				<div class="mark">6th Level</div>
+				<nav class="navigation" aria-label="Main navigation">
+					<a href="index.html">Home</a>
+					<a href="index.html#services">What We Build</a>
+					<a href="index.html#approach">How We Start</a>
+					<a href="products.html" aria-current="page">Products</a>
+					<a href="gaming.html">Gaming</a>
+					<a href="contact.html">Contact</a>
+				</nav>
+			</div>
+			<div class="sidebar-footer">Level Up.</div>
+		</aside>
+
+		<section class="products" aria-labelledby="products-title">
+			<div class="products-content">
+				<p class="eyebrow">6th Level · Products</p>
+				<h1 id="products-title">Coming soon.</h1>
+				<p class="message">We're working on products designed to solve real business needs. Check back soon for updates.</p>
+			</div>
+		</section>
+	</main>
+</body>
+</html>
