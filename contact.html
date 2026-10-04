@@ -208,6 +208,14 @@
 			line-height: 1.5;
 		}
 
+		.honeypot {
+			position: absolute;
+			left: -10000px;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+		}
+
 		@media (max-width: 680px) {
 			.page {
 				display: block;
@@ -270,7 +278,13 @@
 						Message
 						<textarea name="message" required></textarea>
 					</label>
+					<label class="honeypot" aria-hidden="true" tabindex="-1">
+						Leave this field empty
+						<input type="text" name="company_website" autocomplete="off" tabindex="-1">
+					</label>
+					<div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY" data-action="contact" data-theme="dark"></div>
 					<button type="submit">Send message</button>
+					<p class="form-note">Messages are stored for up to 12 months and emailed to our team. Cloudflare Turnstile helps prevent spam.</p>
 					<p class="form-note" id="form-status" role="status"></p>
 				</form>
 			</div>
@@ -283,6 +297,20 @@
 		const form = document.querySelector('#contact-form');
 		const status = document.querySelector('#form-status');
 		const submitButton = form.querySelector('button[type="submit"]');
+		const turnstileContainer = document.querySelector('.cf-turnstile');
+		const turnstileSiteKey = 'YOUR_TURNSTILE_SITE_KEY';
+
+		if (turnstileSiteKey === 'YOUR_TURNSTILE_SITE_KEY') {
+			submitButton.disabled = true;
+			status.textContent = 'Contact form security is not configured yet.';
+		} else {
+			turnstileContainer.dataset.sitekey = turnstileSiteKey;
+			const turnstileScript = document.createElement('script');
+			turnstileScript.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+			turnstileScript.async = true;
+			turnstileScript.defer = true;
+			document.head.append(turnstileScript);
+		}
 
 		form.addEventListener('submit', async function (event) {
 			event.preventDefault();
@@ -308,15 +336,20 @@
 					body: JSON.stringify(Object.fromEntries(new FormData(form)))
 				});
 
+				const result = await response.json().catch(() => ({}));
 				if (!response.ok) {
-					throw new Error('The contact service returned an error.');
+					throw new Error(result.error || 'The contact service returned an error.');
 				}
 
 				form.reset();
-				status.textContent = 'Message sent. Thank you.';
+				window.turnstile?.reset();
+				status.textContent = result.message || 'Message sent. Thank you.';
 			} catch (error) {
 				console.error(error);
-				status.textContent = 'Unable to send the message right now. Please try again.';
+				status.textContent = error instanceof Error
+					? error.message
+					: 'Unable to send the message right now. Please try again.';
+				window.turnstile?.reset();
 			} finally {
 				submitButton.disabled = false;
 				submitButton.textContent = 'Send message';
