@@ -41,6 +41,9 @@
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
+			position: sticky;
+			top: 0;
+			height: 100vh;
 			padding: 2rem 1.5rem;
 			background: var(--sidebar);
 		}
@@ -88,7 +91,7 @@
 		.hero {
 			position: relative;
 			display: flex;
-			align-items: flex-end;
+			align-items: center;
 			min-height: 100vh;
 			overflow: hidden;
 			background: #292c2d;
@@ -108,22 +111,108 @@
 		.hero::after {
 			position: absolute;
 			inset: 0;
-			background: linear-gradient(180deg, transparent 42%, rgba(10, 11, 12, 0.82) 100%);
+			background: linear-gradient(90deg, rgba(10, 11, 12, 0.88), rgba(10, 11, 12, 0.42) 75%);
 			content: '';
 		}
 
 		.hero-caption {
 			position: relative;
 			z-index: 1;
-			max-width: 32rem;
-			padding: 2.5rem clamp(1.5rem, 5vw, 5rem);
+			width: min(100%, 47rem);
+			padding: 3rem clamp(1.5rem, 5vw, 5rem);
 		}
 
-		.hero-caption p {
-			margin: 0;
+		.eyebrow {
+			margin: 0 0 1.25rem;
+			color: #bec2c1;
+			font-family: 'Courier New', monospace;
+			font-size: 0.75rem;
+			text-transform: uppercase;
+		}
+
+		h1,
+		h2,
+		p {
+			margin-top: 0;
+		}
+
+		h1 {
+			max-width: 42rem;
+			margin-bottom: 1.5rem;
+			font-size: 3.5rem;
+			font-weight: normal;
+			line-height: 1.02;
+		}
+
+		.hero-copy {
+			max-width: 39rem;
+			margin-bottom: 1.25rem;
 			color: #d8d9d5;
-			font-size: clamp(1.35rem, 2.4vw, 2.35rem);
+			font-size: 1.1rem;
+			line-height: 1.65;
+		}
+
+		.consultation-link {
+			display: inline-block;
+			margin-top: 0.75rem;
+			border: 1px solid #d8d9d5;
+			padding: 0.9rem 1rem;
+			color: var(--text);
+			background: var(--button);
+			font-family: 'Courier New', monospace;
+			font-size: 0.8rem;
+			text-decoration: none;
+			transition: background 160ms ease, border-color 160ms ease;
+		}
+
+		.consultation-link:hover,
+		.consultation-link:focus-visible {
+			border-color: #fff;
+			background: var(--button-hover);
+			outline: none;
+		}
+
+		.content-section {
+			padding: 6rem clamp(1.5rem, 5vw, 5rem);
+		}
+
+		.content-section h2 {
+			max-width: 38rem;
+			margin-bottom: 1rem;
+			font-size: 2.5rem;
+			font-weight: normal;
 			line-height: 1.1;
+		}
+
+		.section-copy {
+			max-width: 40rem;
+			margin-bottom: 2rem;
+			color: var(--muted);
+			font-size: 1.05rem;
+			line-height: 1.65;
+		}
+
+		.services-list {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			max-width: 48rem;
+			border-top: 1px solid #45494c;
+		}
+
+		.services-list span {
+			padding: 1rem 0;
+			border-bottom: 1px solid #45494c;
+			color: var(--text);
+			font-family: 'Courier New', monospace;
+			font-size: 0.9rem;
+		}
+
+		.approach-section {
+			background: #202326;
+		}
+
+		.approach-section .consultation-link {
+			margin-top: 0;
 		}
 
 		@media (max-width: 680px) {
@@ -132,12 +221,14 @@
 			}
 
 			.sidebar {
+				position: static;
+				height: auto;
 				min-height: auto;
 				padding: 1.25rem;
 			}
 
 			.navigation {
-				grid-template-columns: repeat(3, 1fr);
+				grid-template-columns: repeat(3, minmax(0, 1fr));
 				margin-top: 2rem;
 			}
 
@@ -146,11 +237,27 @@
 			}
 
 			.hero {
-				min-height: calc(100vh - 9.75rem);
+				min-height: 34rem;
 			}
 
 			.hero-caption {
-				padding: 2rem 1.25rem;
+				padding: 2.5rem 1.25rem;
+			}
+
+			h1 {
+				font-size: 2.6rem;
+			}
+
+			.content-section {
+				padding: 4rem 1.25rem;
+			}
+
+			.content-section h2 {
+				font-size: 2rem;
+			}
+
+			.services-list {
+				grid-template-columns: 1fr;
 			}
 		}
 	</style>
@@ -162,23 +269,46 @@
 				<div class="mark">6th Level</div>
 				<nav class="navigation" aria-label="Main navigation">
 					<a href="index.html">Home</a>
-					<a href="#coming-soon">Coming Soon</a>
-					<a href="#about">About</a>
+					<a href="#services">What We Build</a>
+					<a href="#approach">How We Start</a>
 					<a href="contact.html">Contact</a>
 				</nav>
 			</div>
 			<div class="sidebar-footer">Level Up.</div>
 		</aside>
 
-		<section class="hero" aria-label="Introduction">
+		<section class="hero" aria-labelledby="hero-title">
 			<img
 				class="hero-image"
 				src="media/6thlevellogo.png"
 				alt="6th Level logo"
 			>
 			<div class="hero-caption">
-				<p></p>
+				<p class="eyebrow">6th Level · Business technology</p>
+				<h1 id="hero-title">Technology built around your business.</h1>
+				<p class="hero-copy">We build websites, software, automations, and integrations around the needs of your business, not the other way around.</p>
+				<p class="hero-copy">Whether you're running a local business, growing a new one, or turning an idea into something real, we start by understanding what you're trying to accomplish.</p>
+				<a class="consultation-link" href="contact.html">Start with a free consultation</a>
 			</div>
+		</section>
+
+		<section class="content-section" id="services" aria-labelledby="services-title">
+			<p class="eyebrow">What we build</p>
+			<h2 id="services-title">The right technology for the work in front of you.</h2>
+			<p class="section-copy">From a clear first website to tools that connect the way your business operates, the work starts with what you need to accomplish.</p>
+			<div class="services-list" aria-label="Services">
+				<span>Websites</span>
+				<span>Software</span>
+				<span>Automations</span>
+				<span>Integrations</span>
+			</div>
+		</section>
+
+		<section class="content-section approach-section" id="approach" aria-labelledby="approach-title">
+			<p class="eyebrow">How we start</p>
+			<h2 id="approach-title">First, let's understand what you're trying to do.</h2>
+			<p class="section-copy">A free consultation is a chance to talk through your business, the challenge in front of you, and whether technology can help.</p>
+			<a class="consultation-link" href="contact.html">Start with a free consultation</a>
 		</section>
 	</main>
 </body>
