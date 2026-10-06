@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Contact Us | Independent Systems</title>
+	<title>Contact Us | 6th Level</title>
 	<style>
 		:root {
 			color-scheme: dark;
@@ -268,22 +268,23 @@
 				<form class="contact-form" id="contact-form">
 					<label>
 						Name
-						<input type="text" name="name" autocomplete="name" required>
+						<input type="text" name="name" autocomplete="name" maxlength="120" required>
 					</label>
 					<label>
 						Email
-						<input type="email" name="email" autocomplete="email" required>
+						<input type="email" name="email" autocomplete="email" maxlength="320" required>
 					</label>
 					<label>
 						Message
-						<textarea name="message" required></textarea>
+						<textarea name="message" maxlength="5000" required></textarea>
 					</label>
 					<label class="honeypot" aria-hidden="true" tabindex="-1">
 						Leave this field empty
 						<input type="text" name="company_website" autocomplete="off" tabindex="-1">
 					</label>
-					<div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY" data-action="contact" data-theme="dark"></div>
-					<button type="submit">Send message</button>
+					<div id="contact-turnstile" data-sitekey="0x4AAAAAAFPdPXUYkSka-xch" data-action="contact" data-theme="dark"></div>
+					<button type="submit" disabled>Send message</button>
+					<p class="form-note">You can also email <a href="mailto:hutton@6thlevel.net" style="color: inherit">hutton@6thlevel.net</a>.</p>
 					<p class="form-note">Messages are stored for up to 12 months and emailed to our team. Cloudflare Turnstile helps prevent spam.</p>
 					<p class="form-note" id="form-status" role="status"></p>
 				</form>
@@ -297,35 +298,55 @@
 		const form = document.querySelector('#contact-form');
 		const status = document.querySelector('#form-status');
 		const submitButton = form.querySelector('button[type="submit"]');
-		const turnstileContainer = document.querySelector('.cf-turnstile');
-		const turnstileSiteKey = 'YOUR_TURNSTILE_SITE_KEY';
-
-		if (turnstileSiteKey === 'YOUR_TURNSTILE_SITE_KEY') {
+		const turnstileContainer = document.querySelector('#contact-turnstile');
+		let turnstileWidgetId;
+		let turnstileToken = '';
+		let sending = false;
+		const clearVerification = () => {
+			turnstileToken = '';
 			submitButton.disabled = true;
-			status.textContent = 'Contact form security is not configured yet.';
-		} else {
-			turnstileContainer.dataset.sitekey = turnstileSiteKey;
-			const turnstileScript = document.createElement('script');
-			turnstileScript.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
-			turnstileScript.async = true;
-			turnstileScript.defer = true;
-			document.head.append(turnstileScript);
-		}
+		};
+		window.onContactTurnstileLoad = () => {
+			turnstileWidgetId = window.turnstile.render(turnstileContainer, {
+				sitekey: turnstileContainer.dataset.sitekey,
+				action: 'contact',
+				theme: 'dark',
+				callback: (token) => {
+					turnstileToken = token;
+					submitButton.disabled = sending || !token;
+				},
+				'expired-callback': clearVerification,
+				'error-callback': () => {
+					clearVerification();
+					status.textContent = 'Please retry the verification or contact us by email.';
+				}
+			});
+		};
+		const turnstileScript = document.createElement('script');
+		turnstileScript.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onContactTurnstileLoad&render=explicit';
+		turnstileScript.async = true;
+		turnstileScript.defer = true;
+		turnstileScript.onerror = () => {
+			clearVerification();
+			status.textContent = 'Please reload the page or contact us by email.';
+		};
+		document.head.append(turnstileScript);
 
 		form.addEventListener('submit', async function (event) {
 			event.preventDefault();
+			if (sending) return;
+			if (!turnstileToken) {
+				status.textContent = 'Please complete the verification before sending.';
+				return;
+			}
+			sending = true;
 			status.textContent = '';
 			submitButton.disabled = true;
 			submitButton.textContent = 'Sending...';
 
-			if (!SUPABASE_FUNCTION_URL) {
-				status.textContent = 'The contact service is not configured yet.';
-				submitButton.disabled = false;
-				submitButton.textContent = 'Send message';
-				return;
-			}
-
 			try {
+				const payload = Object.fromEntries(new FormData(form));
+				payload['cf-turnstile-response'] = turnstileToken;
 				const response = await fetch(SUPABASE_FUNCTION_URL, {
 					method: 'POST',
 					headers: {
@@ -333,7 +354,7 @@
 						apikey: SUPABASE_ANON_KEY,
 						Authorization: `Bearer ${SUPABASE_ANON_KEY}`
 					},
-					body: JSON.stringify(Object.fromEntries(new FormData(form)))
+					body: JSON.stringify(payload)
 				});
 
 				const result = await response.json().catch(() => ({}));
@@ -342,16 +363,16 @@
 				}
 
 				form.reset();
-				window.turnstile?.reset();
 				status.textContent = result.message || 'Message sent. Thank you.';
 			} catch (error) {
 				console.error(error);
 				status.textContent = error instanceof Error
 					? error.message
 					: 'Unable to send the message right now. Please try again.';
-				window.turnstile?.reset();
 			} finally {
-				submitButton.disabled = false;
+				sending = false;
+				clearVerification();
+				if (turnstileWidgetId !== undefined) window.turnstile?.reset(turnstileWidgetId);
 				submitButton.textContent = 'Send message';
 			}
 		});
