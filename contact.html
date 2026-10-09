@@ -183,7 +183,31 @@
 			resize: vertical;
 		}
 
-		button {
+		.primary-contact {
+			margin-bottom: 2rem;
+		}
+
+		.primary-contact .eyebrow {
+			margin-bottom: 0.5rem;
+		}
+
+		.contact-number {
+			display: block;
+			width: fit-content;
+			margin-bottom: 1rem;
+			color: var(--text);
+			font-size: 1.5rem;
+			line-height: 1.5;
+			text-underline-offset: 0.2em;
+		}
+
+		.call-link {
+			display: inline-block;
+			text-decoration: none;
+		}
+
+		button,
+		.call-link {
 			width: fit-content;
 			border: 1px solid var(--border);
 			padding: 0.8rem 1rem;
@@ -196,7 +220,9 @@
 		}
 
 		button:hover,
-		button:focus-visible {
+		button:focus-visible,
+		.call-link:hover,
+		.call-link:focus-visible {
 			border-color: var(--muted);
 			background: var(--button-hover);
 			outline: none;
@@ -265,7 +291,12 @@
 			<div class="contact-content">
 				<p class="eyebrow">Get in touch</p>
 				<h1 id="contact-title">Contact Us</h1>
-				<p class="intro">Have a problem worth exploring, or want to talk about a project? Send a note below.</p>
+				<p class="intro">Have a problem worth exploring, or want to talk about a project? Give us a call or send a note below.</p>
+				<div class="primary-contact">
+					<p class="eyebrow">Primary company contact</p>
+					<a class="contact-number" href="tel:+19713795853">971-379-5853</a>
+					<a class="call-link" href="tel:+19713795853" aria-label="Call 6th Level at 971-379-5853">Call Now</a>
+				</div>
 
 				<form class="contact-form" id="contact-form">
 					<label>
