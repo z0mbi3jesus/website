@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Products | 6th Level</title>
-	<meta name="description" content="Business technology products from 6th Level. Coming soon.">
+	<meta name="description" content="Explore HealthCare Plus, a proprietary application from 6th Level LLC in active development for patient scheduling, staff management, and administrative workflows.">
 	<link rel="canonical" href="https://6thlevel.net/products.html">
 	<meta name="robots" content="noindex, follow">
 	<style>
@@ -127,6 +127,63 @@
 			line-height: 1.65;
 		}
 
+		.product-list {
+			display: grid;
+			gap: 2rem;
+			margin-top: 2.5rem;
+		}
+
+		.product {
+			border-top: 1px solid #45494c;
+			padding-top: 2rem;
+		}
+
+		.product h2 {
+			margin: 0 0 1rem;
+			font-size: clamp(2rem, 4vw, 3rem);
+			font-weight: normal;
+			line-height: 1.1;
+		}
+
+		.product-status {
+			margin: 0 0 1.25rem;
+			color: var(--text);
+			font-family: 'Courier New', monospace;
+			font-size: 0.8rem;
+			line-height: 1.5;
+		}
+
+		.product .message + .message {
+			margin-top: 1rem;
+		}
+
+		.product-actions {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.75rem;
+			margin: 1.5rem 0;
+		}
+
+		.product-link {
+			display: inline-block;
+			border: 1px solid var(--muted);
+			padding: 0.9rem 1rem;
+			color: var(--text);
+			background: var(--button);
+			font-family: 'Courier New', monospace;
+			font-size: 0.8rem;
+			line-height: 1.5;
+			text-decoration: none;
+			transition: background 160ms ease, border-color 160ms ease;
+		}
+
+		.product-link:hover,
+		.product-link:focus-visible {
+			border-color: var(--text);
+			background: var(--button-hover);
+			outline: none;
+		}
+
 		@media (max-width: 680px) {
 			.page {
 				display: block;
@@ -175,8 +232,21 @@
 		<section class="products" aria-labelledby="products-title">
 			<div class="products-content">
 				<p class="eyebrow">6th Level · Products</p>
-				<h1 id="products-title">Coming soon.</h1>
-				<p class="message">We're working on products designed to solve real business needs. Check back soon for updates.</p>
+				<h1 id="products-title">Products.</h1>
+				<p class="message">Proprietary software from 6th Level LLC, built around real business needs.</p>
+				<div class="product-list">
+					<article class="product" aria-labelledby="healthcare-plus-title">
+						<h2 id="healthcare-plus-title">HealthCare Plus</h2>
+						<p class="product-status">In active development and testing.</p>
+						<p class="message">HealthCare Plus is a proprietary web application from 6th Level LLC focused on patient scheduling, staff management, and administrative workflows.</p>
+						<p class="message">These capability areas are under development and testing. Features and availability may change as validation continues.</p>
+						<div class="product-actions">
+							<a class="product-link" href="https://z0mbi3jesus.github.io/web-template-health/">Explore HealthCare Plus</a>
+							<a class="product-link" href="contact.html">Discuss licensing or customization</a>
+						</div>
+						<p class="message">Contact 6th Level to discuss future licensing, customization, or availability.</p>
+					</article>
+				</div>
 			</div>
 		</section>
 	</main>
