@@ -202,12 +202,49 @@
 			border-top: 1px solid #45494c;
 		}
 
-		.services-list span {
+		.services-list article {
 			padding: 1rem 0;
 			border-bottom: 1px solid #45494c;
+		}
+
+		.services-list {
+			column-gap: 1.5rem;
+			margin-bottom: 1.5rem;
+		}
+
+		.services-list h3 {
+			margin: 0 0 0.5rem;
 			color: var(--text);
 			font-family: 'Courier New', monospace;
 			font-size: 0.9rem;
+			font-weight: normal;
+			line-height: 1.5;
+		}
+
+		.services-list p {
+			margin: 0;
+			color: var(--muted);
+			font-size: 1rem;
+			line-height: 1.65;
+		}
+
+		.approach-steps {
+			max-width: 40rem;
+			margin: 0 0 2rem;
+			padding-left: 1.5rem;
+			color: var(--muted);
+			font-size: 1.05rem;
+			line-height: 1.65;
+		}
+
+		.approach-steps li {
+			padding-left: 0.25rem;
+			margin-bottom: 1rem;
+		}
+
+		.approach-steps strong {
+			color: var(--text);
+			font-weight: normal;
 		}
 
 		.approach-section {
@@ -321,20 +358,48 @@
 
 		<section class="content-section" id="services" aria-labelledby="services-title">
 			<p class="eyebrow">What we build</p>
-			<h2 id="services-title">The right technology for the work in front of you.</h2>
-			<p class="section-copy">From a clear first website to tools that connect the way your business operates, the work starts with what you need to accomplish.</p>
+			<h2 id="services-title">Practical tools for running your business.</h2>
+			<p class="section-copy">We develop and maintain technology that helps customers reach you, keeps information organized, and reduces repetitive work.</p>
 			<div class="services-list" aria-label="Services">
-				<span>Websites</span>
-				<span>Software</span>
-				<span>Automations</span>
-				<span>Integrations</span>
+				<article>
+					<h3>Websites and web applications</h3>
+					<p>Business websites, booking tools, and customer portals that help people find and use your services.</p>
+				</article>
+				<article>
+					<h3>Custom software development</h3>
+					<p>Tools built for your daily operations, such as preparing quotes, tracking inventory, or managing jobs.</p>
+				</article>
+				<article>
+					<h3>Business automation and integrations</h3>
+					<p>Connect your business tools, send reminders, and reduce repeated data entry.</p>
+				</article>
+				<article>
+					<h3>APIs and backend development</h3>
+					<p>Build the connections and behind-the-scenes systems that let your website and software share information and process requests.</p>
+				</article>
+				<article>
+					<h3>Databases and data management</h3>
+					<p>Organize customer, inventory, and job records so information is easier to find, update, and report on.</p>
+				</article>
+				<article>
+					<h3>Technical maintenance and support</h3>
+					<p>Fix issues, maintain existing websites and software, and make improvements as your needs change.</p>
+				</article>
 			</div>
+			<a class="consultation-link" href="products.html">Explore our products</a>
 		</section>
 
 		<section class="content-section approach-section" id="approach" aria-labelledby="approach-title">
 			<p class="eyebrow">How we start</p>
-			<h2 id="approach-title">Let’s start by understanding your goals and what you’re looking to achieve.</h2>
-			<p class="section-copy">A free consultation is a chance to talk through your business, the challenge in front of you, and whether technology can help.</p>
+			<h2 id="approach-title">A clear path from first conversation to approved work.</h2>
+			<ol class="approach-steps">
+				<li><strong>Start with a free consultation.</strong> Tell us what you want to accomplish and what is getting in the way.</li>
+				<li><strong>Understand your business.</strong> We learn how you work, which tools you use, and what technology needs to do for you.</li>
+				<li><strong>Evaluate the options.</strong> We compare possible solutions and determine whether 6th Level is the right provider.</li>
+				<li><strong>Review a proposal.</strong> If we are a good fit, we outline the scope, pricing, and expectations so you can make an informed decision.</li>
+				<li><strong>Approve before work begins.</strong> We begin the proposed work after you approve the proposal.</li>
+			</ol>
+			<p class="section-copy">Honest, knowledgeable advice comes first. If an existing solution or another provider would serve you better, we are willing to recommend it.</p>
 			<a class="consultation-link" href="contact.html">Start with a free consultation</a>
 		</section>
 	</main>
